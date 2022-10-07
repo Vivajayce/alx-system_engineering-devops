@@ -1,3 +1,2 @@
 #!/bin/bash
-sudo .3-new_owner
-ls -l
+sudo chown betty hello
