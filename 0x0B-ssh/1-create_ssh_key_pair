@@ -1,3 +1,6 @@
 #!/usr/bin/env bash
-# Bash script that uses ssh to connect to your server using the private key ~/.ssh/school with the user ubuntu.
-ssh-keygen -t rsa -P school.pub -f school -b 4096 -N 'betty'
+# Create a RSA key pair
+# Name of private key must be school
+# Number of bits in created key should be 4096
+# Key must be protected by a passphrase
+ssh-keygen -b 4096 -f school -t rsa -P 'betty'
