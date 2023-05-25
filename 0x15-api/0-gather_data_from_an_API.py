@@ -1,41 +1,33 @@
 #!/usr/bin/python3
-'''Reads todo list from api for employee id passed'''
-
-import requests
-import sys
-
-base_url = 'https://jsonplaceholder.typicode.com/'
+"""
+place holder
+"""
 
 
-def do_request():
-    '''Performs request'''
-    if len(sys.argv) < 2:
-        return print('USAGE:', __file__, '<employee id>')
-    eid = sys.argv[1]
-    try:
-        _eid = int(sys.argv[1])
-    except ValueError:
-        return print('Employee id must be an integer')
+if __name__ == "__main__":
 
-    response = requests.get(base_url + 'users/' + eid)
-    if response.status_code == 404:
-        return print('User id not found')
-    elif response.status_code != 200:
-        return print('Error: status_code:', response.status_code)
-    user = response.json()
+    import requests
+    from sys import argv
+    if len(argv) < 2:
+        exit()
+    todos = requests.get(
+        "https://jsonplaceholder.typicode.com/todos?userId={}&completed=true"
+        .format(argv[1]))
+    name = requests.get(
+        "https://jsonplaceholder.typicode.com/users?id={}"
+        .format(argv[1]))
+    name = name.json()
+    name = name[0]["name"]
+    todo = requests.get(
+        "https://jsonplaceholder.typicode.com/todos?userId={}".format(argv[1]))
+    todo = todo.json()
+    todo = len(todo)
+    todos = todos.json()
+    todo_list = []
 
-    response = requests.get(base_url + 'todos/')
-    if response.status_code != 200:
-        return print('Error: status_code:', response.status_code)
-    todos = response.json()
-
-    user_todos = [todo for todo in todos
-                  if todo.get('userId') == user.get('id')]
-    completed = [todo for todo in user_todos if todo.get('completed')]
-    print('Employee', user.get('name'),
-          'is done with tasks({}/{}):'.
-          format(len(completed), len(user_todos)))
-    [print('\t', todo.get('title')) for todo in completed]
-
-if __name__ == '__main__':
-    do_request()
+    for x in todos:
+        todo_list.append("\t {}".format(x["title"]))
+    print("Employee {} is done with tasks({}/{}):"
+          .format(name, len(todos), todo))
+    for y in todo_list:
+        print(y)
